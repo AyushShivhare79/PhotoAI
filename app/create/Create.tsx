@@ -3,7 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
+import Image from "next/image";
 import { useCallback, useState } from "react";
+import batman from "../../public/batman.jpeg";
 
 export default function Create() {
   const [prompt, setPrompt] = useState("");
@@ -36,7 +38,14 @@ export default function Create() {
           </Button>
         </div>
         <div className="border border-black w-full">
-          <img src={imageUrl} />
+          <div className="border border-black">
+            <Image
+              src={batman}
+              width={500}
+              height={500}
+              alt="Picture of the author"
+            />
+          </div>
         </div>
       </div>
     </>
