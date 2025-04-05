@@ -37,7 +37,7 @@ export default function Create() {
             Generate
           </Button>
         </div>
-        <div className="border border-black w-full">
+        <div className="border border-red-500 w-full flex justify-center items-center">
           <div className="border border-black">
             <Image
               src={batman}
