@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import Image from "next/image";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import batman from "../../public/batman.jpeg";
 
 export default function Create() {
@@ -19,6 +19,19 @@ export default function Create() {
     setImageUrl(imageUrl);
     console.log("Image URL: ", imageUrl);
   }, [prompt]);
+
+  useEffect(() => {
+    if (!imageUrl) return;
+
+    const uploadImage = async () => {
+      const response = await axios.post("/api/upload", {
+        imageUrl: imageUrl,
+      });
+      console.log("Image uploaded: ", response.data);
+    };
+
+    uploadImage();
+  }, [imageUrl]);
 
   return (
     <>
@@ -40,7 +53,7 @@ export default function Create() {
         <div className="border border-red-500 w-full flex justify-center items-center">
           <div className="border border-black">
             <Image
-              src={batman}
+              src={imageUrl || batman}
               width={500}
               height={500}
               alt="Picture of the author"
