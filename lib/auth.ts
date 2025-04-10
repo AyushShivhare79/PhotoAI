@@ -10,6 +10,21 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
+  callbacks: {
+    async session({ session, token }: any) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: session?.user?.email,
+        },
+      });
+
+      if (user) {
+        session.user.id = user.id;
+      }
+
+      return session;
+    },
+  },
 };
 
 export default authOptions;
