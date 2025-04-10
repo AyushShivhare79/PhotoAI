@@ -11,9 +11,8 @@ async function getImages(req: NextRequest) {
     where: {
       userId: userId,
     },
-    select: {
-      id: true,
-      url: true,
+    orderBy: {
+      createdAt: "desc",
     },
   });
 

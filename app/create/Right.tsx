@@ -24,7 +24,7 @@ export default function Right({ imageUrl }: { imageUrl: string }) {
   return (
     <>
       {/* Remove later and use next/image */}
-      <div className="w-[25%] flex space-x-4">
+      <div className="grid grid-cols-3 w-[80%] gap-5 p-4">
         {image.map((img) => (
           <img
             key={img.id}
