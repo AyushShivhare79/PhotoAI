@@ -34,6 +34,13 @@ async function generateImage(req: NextRequest) {
 
     const imageUrl = generateImage.data[0].url;
 
+    if (!imageUrl) {
+      return NextResponse.json(
+        { error: "Image URL not found" },
+        { status: 500 }
+      );
+    }
+
     const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
     const buffer = Buffer.from(response.data, "binary");
 
@@ -51,9 +58,13 @@ async function generateImage(req: NextRequest) {
         userId,
         url: uploadResponse.url,
       },
+      select: {
+        id: true,
+        url: true,
+      },
     });
 
-    return NextResponse.json({ success: true, url: uploadResponse.url });
+    return NextResponse.json({ success: true, image: storeImage });
   } catch (error) {
     console.error("Error generating image:", error);
     return NextResponse.json(

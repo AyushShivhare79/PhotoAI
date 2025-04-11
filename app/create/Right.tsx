@@ -3,13 +3,13 @@ import batman from "../../public/batman.jpeg";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export interface Image {
+export interface ImageProp {
   id: string;
   url: string;
 }
 
 export default function Right() {
-  const [image, setImage] = useState<Image[]>([]);
+  const [image, setImage] = useState<ImageProp[]>([]);
 
   useEffect(() => {
     const fetchImages = async () => {
