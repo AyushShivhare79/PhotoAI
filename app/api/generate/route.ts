@@ -18,7 +18,7 @@ async function generateImage(req: NextRequest) {
   });
   const imageUrl = response.data[0].url;
 
-  return NextResponse.json({ imageUrl });
+  return NextResponse.json({ imageUrl }, { status: 201 });
 }
 
 export { generateImage as GET, generateImage as POST };
