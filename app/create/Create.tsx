@@ -2,8 +2,8 @@
 
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
-import Right, { Image } from "./Right";
+import { useEffect, useState } from "react";
+import { Image } from "./Right";
 import {
   Form,
   FormControl,
@@ -30,7 +30,6 @@ const FormSchema = z.object({
 });
 
 export default function Create() {
-  const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState<Image[]>([]);
 
   useEffect(() => {
@@ -41,36 +40,14 @@ export default function Create() {
     fetchImages();
   }, []);
 
-  // useEffect(() => {
-  //   if (!imageUrl) return;
-
-  //   const uploadImage = async () => {
-  //     const response = await axios.post("/api/upload", {
-  //       imageUrl: imageUrl,
-  //     });
-  //     console.log("Image uploaded: ", response.data);
-  //   };
-
-  //   uploadImage();
-  // }, [imageUrl]);
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("Inside submit");
     const response = await axios.post("/api/generate", {
       prompt: data.prompt,
     });
-    console.log("Response: ", response);
-
-    if (response.status === 201) {
-      alert("Image generated successfully!");
-      await axios.post("/api/test", {
-        imageUrl: response.data.imageUrl,
-      });
-    }
   }
 
   return (
