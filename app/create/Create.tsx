@@ -1,12 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import Button from "@/components/Button";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import Right from "./Right";
-import { Input } from "@/components/ui/input";
-import { pixelifySans } from "@/lib/font";
+import { poppins } from "@/lib/font";
 
 export default function Create() {
   const [prompt, setPrompt] = useState("");
@@ -36,26 +35,33 @@ export default function Create() {
 
   return (
     <>
-      <div className="flex border border-black h-screen ">
-        <div className="p-2 border border-black w-[25%] space-y-5">
+      <div className="flex min-h-screen w-full overflow-hidden">
+        {/* Left side */}
+        <div className="w-[25%] border border-white">
           <h1>Private mode</h1>
         </div>
-        <div className="w-full p-4 space-y-5">
-          <h1 className={` text-5xl`}>
-            AI IMAGE CREATION
-          </h1>
-          <div className="flex justify-center items-center gap-2">
+
+        {/* Right side */}
+        <div className="min-w-[75%] w-full p-4 space-y-5">
+          <h1 className="text-5xl">AI IMAGE CREATION</h1>
+          <div className="flex justify-center items-end gap-2">
             <Textarea
               onChange={(e) => setPrompt(e.target.value)}
               value={prompt}
               rows={10}
               cols={10}
-              className="resize-none"
+              className={`resize-none rounded-none ${poppins.className}`}
               placeholder="Describe what you want to see!"
             />
-            <Button onClick={handleClick} variant="default">
-              Generate
-            </Button>
+
+            <div className="pb-1">
+              <button
+                onClick={handleClick}
+                className={`bg-[#c0c0c0] text-xl border border-white text-black hover:font-semibold cursor-pointer h-10 w-40`}
+              >
+                Generate
+              </button>
+            </div>
           </div>
 
           <h1 className="text-2xl">Images</h1>

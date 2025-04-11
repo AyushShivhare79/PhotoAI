@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${pixelifySans.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${pixelifySans.className} ${geistSans.variable} ${geistMono.variable} bg-black text-white antialiased`}
       >
         <Provider>{children}</Provider>
       </body>
