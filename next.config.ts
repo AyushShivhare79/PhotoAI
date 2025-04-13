@@ -2,7 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  hostname: "ik.imagekit.io",
+  images: {
+    domains: ["ik.imagekit.io"],
+  },
 };
 
 export default nextConfig;
