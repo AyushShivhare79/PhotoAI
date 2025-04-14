@@ -1,6 +1,7 @@
 "use client";
 
 import { Textarea } from "@/components/ui/textarea";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -46,13 +47,20 @@ interface ImageProp {
 
 export default function Create() {
   const [image, setImage] = useState<ImageProp[]>([]);
+  const [fetchLoading, setFetchLoading] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const session = useSession();
 
   const fetchImages = useCallback(async () => {
-    const response = await axios.get("/api/getImages");
-    setImage(response.data);
+    try {
+      const response = await axios.get("/api/getImages");
+      setImage(response.data);
+    } catch (error) {
+      console.error("Error fetching images:", error);
+    } finally {
+      setFetchLoading(false);
+    }
   }, [image]);
 
   useEffect(() => {
@@ -184,21 +192,34 @@ export default function Create() {
 
           <div>
             <h1 className="text-3xl">Images</h1>
-            {image.length ? (
+            {fetchLoading ? (
               <div className="grid grid-cols-3 w-[85%] gap-5 p-4">
-                {image.map((img) => (
-                  <Image
-                    key={img.id}
-                    src={img.url}
-                    width={500}
-                    height={500}
-                    className="rounded-xl"
-                    alt="Image"
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <Skeleton
+                    key={index}
+                    className="h-[380px] w-[380px] rounded-xl animate-pulse"
                   />
                 ))}
               </div>
             ) : (
-              <div className="text-center text-xl">No images generated</div>
+              <div>
+                {image.length ? (
+                  <div className="grid grid-cols-3 w-[85%] gap-5 p-4">
+                    {image.map((img) => (
+                      <Image
+                        key={img.id}
+                        src={img.url}
+                        width={500}
+                        height={500}
+                        className="rounded-xl"
+                        alt="Image"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center text-xl">No images generated</div>
+                )}
+              </div>
             )}
           </div>
         </div>
