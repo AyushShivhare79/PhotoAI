@@ -127,7 +127,7 @@ export default function Create() {
 
   return (
     <>
-      <div className="flex overflow-hidden">
+      <div className="px-60 p-4 space-y-10 overflow-hidden">
         <div className="flex justify-between items-center">
           <h1 className="text-5xl">AI IMAGE CREATION</h1>
           <DropdownMenu>
@@ -155,20 +155,28 @@ export default function Create() {
           </DropdownMenu>
         </div>
 
-        <div>{formRender()}</div>
+        <div>
+          <div>{formRender()}</div>
 
-        <h1 className="text-2xl">Images</h1>
-        <div className="grid grid-cols-3 w-[85%] gap-5 p-4">
-          {image.map((img) => (
-            <Image
-              key={img.id}
-              src={img.url}
-              width={500}
-              height={500}
-              className="rounded-xl"
-              alt="Image"
-            />
-          ))}
+          <div className="">
+            <h1 className="text-2xl">Images</h1>
+            {image.length ? (
+              <div className="grid grid-cols-3 w-[85%] gap-5 p-4">
+                {image.map((img) => (
+                  <Image
+                    key={img.id}
+                    src={img.url}
+                    width={500}
+                    height={500}
+                    className="rounded-xl"
+                    alt="Image"
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center">No images generated</div>
+            )}
+          </div>
         </div>
       </div>
     </>
