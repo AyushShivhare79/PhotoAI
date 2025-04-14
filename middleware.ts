@@ -6,7 +6,7 @@ export const config = {
 };
 
 const withAuth = async (req: NextRequest) => {
-  const token = await getToken({ req, secret: process.env.SECRET });
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   if (!token) {
     return NextResponse.redirect(new URL("/", req.url));

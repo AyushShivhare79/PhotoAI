@@ -17,8 +17,7 @@ import { poppins } from "@/lib/font";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { ImageProp } from "./Right";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,7 +26,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Switch } from "@/components/ui/switch";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   prompt: z
@@ -39,6 +38,11 @@ const FormSchema = z.object({
       message: "Prompt must not be longer than 500 characters.",
     }),
 });
+
+interface ImageProp {
+  id: string;
+  url: string;
+}
 
 export default function Create() {
   const [image, setImage] = useState<ImageProp[]>([]);
@@ -125,6 +129,23 @@ export default function Create() {
     );
   };
 
+  const router = useRouter();
+
+  const dropDownOptions = [
+    {
+      label: "Profile",
+      onClick: () => {
+        router.push("/");
+      },
+    },
+    {
+      label: "Logout",
+      onClick: () => {
+        signOut({ redirect: true, callbackUrl: "/" });
+      },
+    },
+  ];
+
   return (
     <>
       <div className="px-60 p-4 space-y-10 overflow-hidden">
@@ -145,21 +166,24 @@ export default function Create() {
             <DropdownMenuContent>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                Logout
-              </DropdownMenuItem>
+              {dropDownOptions.map((option) => (
+                <DropdownMenuItem
+                  key={option.label}
+                  onClick={option.onClick}
+                  className="cursor-pointer"
+                >
+                  {option.label}
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
 
-        <div>
+        <div className="space-y-4">
           <div>{formRender()}</div>
 
-          <div className="">
-            <h1 className="text-2xl">Images</h1>
+          <div>
+            <h1 className="text-3xl">Images</h1>
             {image.length ? (
               <div className="grid grid-cols-3 w-[85%] gap-5 p-4">
                 {image.map((img) => (
@@ -174,7 +198,7 @@ export default function Create() {
                 ))}
               </div>
             ) : (
-              <div className="text-center">No images generated</div>
+              <div className="text-center text-xl">No images generated</div>
             )}
           </div>
         </div>
