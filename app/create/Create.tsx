@@ -28,17 +28,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-
-const FormSchema = z.object({
-  prompt: z
-    .string({ message: "Prompt is required." })
-    .min(10, {
-      message: "Prompt must be at least 10 characters.",
-    })
-    .max(500, {
-      message: "Prompt must not be longer than 500 characters.",
-    }),
-});
+import { FormSchema } from "../types/schema";
 
 interface ImageProp {
   id: string;
@@ -51,11 +41,7 @@ export default function Create() {
   const [loading, setLoading] = useState(false);
 
   const session = useSession();
-
-  const play = () => {
-    const audio = new Audio("/audio/generate.mp3");
-    audio.play();
-  };
+  const router = useRouter();
 
   const fetchImages = useCallback(async () => {
     try {
@@ -66,7 +52,7 @@ export default function Create() {
     } finally {
       setFetchLoading(false);
     }
-  }, [image]);
+  }, []);
 
   useEffect(() => {
     fetchImages();
@@ -75,6 +61,11 @@ export default function Create() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+
+  const play = () => {
+    const audio = new Audio("/audio/generate.mp3");
+    audio.play();
+  };
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
@@ -142,8 +133,6 @@ export default function Create() {
       </div>
     );
   };
-
-  const router = useRouter();
 
   const dropDownOptions = [
     {
