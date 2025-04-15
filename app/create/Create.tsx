@@ -37,6 +37,7 @@ interface ImageProp {
 
 export default function Create() {
   const [image, setImage] = useState<ImageProp[]>([]);
+  const [credits, setCredits] = useState(0);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +47,9 @@ export default function Create() {
   const fetchImages = useCallback(async () => {
     try {
       const response = await axios.get("/api/getImages");
-      setImage(response.data);
+      setImage(response.data.generatedImage);
+      console.log("Response: ", response);
+      setCredits(response.data.credits);
     } catch (error) {
       console.error("Error fetching images:", error);
     } finally {
@@ -154,32 +157,37 @@ export default function Create() {
       <div className="px-60 p-4 space-y-10 overflow-hidden">
         <div className="flex justify-between items-center">
           <h1 className="text-5xl">AI IMAGE CREATION</h1>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Avatar className="w-12 h-12 cursor-pointer">
-                <AvatarImage src={`${session.data?.user?.image}`} />
-                <AvatarFallback className="text-black">
-                  {session.data?.user?.name
-                    ?.split(" ")[0]
-                    .charAt(0)
-                    .toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {dropDownOptions.map((option) => (
-                <DropdownMenuItem
-                  key={option.label}
-                  onClick={option.onClick}
-                  className="cursor-pointer"
-                >
-                  {option.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex items-center gap-4">
+            <p className="text-xl">
+              Credits: <span className={`${poppins.className}`}>{credits}</span>
+            </p>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar className="w-12 h-12 cursor-pointer">
+                  <AvatarImage src={`${session.data?.user?.image}`} />
+                  <AvatarFallback className="text-black">
+                    {session.data?.user?.name
+                      ?.split(" ")[0]
+                      .charAt(0)
+                      .toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {dropDownOptions.map((option) => (
+                  <DropdownMenuItem
+                    key={option.label}
+                    onClick={option.onClick}
+                    className="cursor-pointer"
+                  >
+                    {option.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         <div className="space-y-4">

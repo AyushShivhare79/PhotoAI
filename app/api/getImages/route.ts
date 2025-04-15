@@ -7,12 +7,13 @@ async function getImages() {
   const session = await getServerSession(authOptions);
   const userId = session?.user.id;
 
-  const response = await prisma.generatedImage.findMany({
+  const response = await prisma.user.findUnique({
     where: {
-      userId: userId,
+      id: userId,
     },
-    orderBy: {
-      createdAt: "desc",
+    select: {
+      generatedImage: true,
+      credits: true,
     },
   });
 
