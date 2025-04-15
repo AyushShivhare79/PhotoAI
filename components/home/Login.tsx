@@ -10,7 +10,7 @@ export default function Home() {
     <div className="h-screen flex justify-center items-center">
       <Button
         onClick={() => {
-          session.status === "authenticated"
+          return session.status === "authenticated"
             ? signOut()
             : signIn("google", { callbackUrl: "/create" });
         }}

@@ -51,7 +51,14 @@ async function generateImage(req: NextRequest) {
       folder: "/photo-ai",
     });
 
-    const userId = session?.user?.id;
+    const userId = session?.user.id;
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
 
     const storeImage = await prisma.generatedImage.create({
       data: {
