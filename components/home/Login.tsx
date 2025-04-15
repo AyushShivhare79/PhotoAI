@@ -12,7 +12,7 @@ export default function Home() {
         onClick={() => {
           session.status === "authenticated"
             ? signOut()
-            : signIn("google", { callbackUrl: "/" });
+            : signIn("google", { callbackUrl: "/create" });
         }}
       >
         {session.status === "authenticated" ? <p>Signout</p> : <p>Signin</p>}
