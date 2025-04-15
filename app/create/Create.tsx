@@ -52,6 +52,11 @@ export default function Create() {
 
   const session = useSession();
 
+  const play = () => {
+    const audio = new Audio("/audio/generate.mp3");
+    audio.play();
+  };
+
   const fetchImages = useCallback(async () => {
     try {
       const response = await axios.get("/api/getImages");
@@ -91,6 +96,7 @@ export default function Create() {
       alert("An error occurred while generating the image.");
     } finally {
       setLoading(false);
+      play();
     }
   }
 
@@ -119,7 +125,7 @@ export default function Create() {
                         type="submit"
                         className={`bg-[#c0c0c0] text-xl border border-white text-black hover:font-semibold cursor-pointer h-10 w-40`}
                       >
-                        Generate
+                        {loading ? "Generating..." : "Generate"}
                       </button>
                     </div>
                   </div>
@@ -161,7 +167,7 @@ export default function Create() {
           <h1 className="text-5xl">AI IMAGE CREATION</h1>
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Avatar className="w-12 h-12">
+              <Avatar className="w-12 h-12 cursor-pointer">
                 <AvatarImage src={`${session.data?.user?.image}`} />
                 <AvatarFallback className="text-black">
                   {session.data?.user?.name
@@ -204,7 +210,7 @@ export default function Create() {
             ) : (
               <div>
                 {image.length ? (
-                  <div className="grid grid-cols-3 w-[85%] gap-5 p-4">
+                  <div className="grid grid-cols-3 w-[90%] gap-5 p-4">
                     {image.map((img) => (
                       <Image
                         key={img.id}
