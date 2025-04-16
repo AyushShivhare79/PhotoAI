@@ -95,7 +95,7 @@ async function generateImage(req: NextRequest) {
       },
     });
 
-    const credits = await prisma.user.update({
+    await prisma.user.update({
       where: {
         id: userId,
       },

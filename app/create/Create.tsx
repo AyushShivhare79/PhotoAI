@@ -67,6 +67,8 @@ export default function Create() {
 
   const play = () => {
     const audio = new Audio("/audio/generate.mp3");
+    audio.volume = 0.1;
+
     audio.play();
   };
 
