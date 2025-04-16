@@ -12,7 +12,11 @@ async function getImages() {
       id: userId,
     },
     select: {
-      generatedImage: true,
+      generatedImage: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
       credits: true,
     },
   });

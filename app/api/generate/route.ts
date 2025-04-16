@@ -60,6 +60,30 @@ async function generateImage(req: NextRequest) {
       );
     }
 
+    // const transaction = await prisma.$transaction([
+    //   prisma.generatedImage.create({
+    //     data: {
+    //       userId,
+    //       url: uploadResponse.url,
+    //     },
+    //     select: {
+    //       id: true,
+    //       url: true,
+    //     },
+    //   }),
+
+    //   prisma.user.update({
+    //     where: {
+    //       id: userId,
+    //     },
+    //     data: {
+    //       credits: {
+    //         decrement: 1,
+    //       },
+    //     },
+    //   }),
+    // ]);
+
     const storeImage = await prisma.generatedImage.create({
       data: {
         userId,
@@ -68,6 +92,17 @@ async function generateImage(req: NextRequest) {
       select: {
         id: true,
         url: true,
+      },
+    });
+
+    const credits = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        credits: {
+          decrement: 1,
+        },
       },
     });
 
