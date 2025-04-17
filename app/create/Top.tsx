@@ -31,24 +31,24 @@ export default function Top({ credits }: { credits: number }) {
       },
     },
   ];
+  const fallback = session.data?.user?.name
+    ?.split(" ")[0]
+    .charAt(0)
+    .toUpperCase();
 
   return (
     <div className="flex justify-between items-center">
-      <h1 className="text-5xl">AI IMAGE CREATION</h1>
+      <h1 className="text-2xl lg:text-5xl">AI IMAGE CREATION</h1>
       <div className="flex items-center gap-4">
-        <p className="text-xl">
+        <p className="flex gap-1 text-base lg:text-xl">
           Credits: <span className={`${poppins.className}`}>{credits}</span>
         </p>
+
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Avatar className="w-12 h-12 cursor-pointer">
+            <Avatar className=" w-10 h-10 lg:w-12 lg:h-12 cursor-pointer">
               <AvatarImage src={`${session.data?.user?.image}`} />
-              <AvatarFallback className="text-black">
-                {session.data?.user?.name
-                  ?.split(" ")[0]
-                  .charAt(0)
-                  .toUpperCase()}
-              </AvatarFallback>
+              <AvatarFallback className="text-black">{fallback}</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>

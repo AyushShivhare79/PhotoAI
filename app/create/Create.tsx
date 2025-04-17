@@ -95,7 +95,7 @@ export default function Create() {
               name="prompt"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <div className="flex gap-2 justify-center items-end">
+                  <div className="flex flex-col lg:flex-row gap-2 justify-center items-end">
                     <FormControl>
                       <Textarea
                         disabled={generateLoading}
@@ -104,11 +104,12 @@ export default function Create() {
                         {...field}
                       />
                     </FormControl>
-                    <div className="pb-2">
+
+                    <div className="pb-2 space-y-2 w-full lg:w-auto">
                       <button
                         disabled={generateLoading}
                         type="submit"
-                        className={`bg-[#c0c0c0] text-xl border border-white text-black hover:font-semibold cursor-pointer h-10 w-40`}
+                        className={`bg-[#c0c0c0] text-xl border border-white text-black hover:font-semibold cursor-pointer w-full h-10 lg:w-40`}
                       >
                         {generateLoading ? "Generating..." : "Generate"}
                       </button>
@@ -130,7 +131,7 @@ export default function Create() {
 
   return (
     <>
-      <div className="px-60 p-4 space-y-10 overflow-hidden">
+      <div className="lg:px-60 p-4 space-y-10 overflow-hidden">
         <Top credits={credits} />
 
         <div className="space-y-4">
@@ -148,9 +149,9 @@ export default function Create() {
                 ))}
               </div>
             ) : (
-              <div>
+              <div className="flex justify-center lg:justify-start items-center">
                 {image.length ? (
-                  <div className="grid grid-cols-3 w-[90%] gap-5 p-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 w-[85%] gap-5 p-4">
                     {image.map((img) => (
                       <Image
                         key={img.id}
