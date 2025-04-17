@@ -6,7 +6,7 @@ export const promptSchema = z.object({
     .min(10, {
       message: "Prompt must be at least 10 characters.",
     })
-    .max(500, {
+    .max(1000, {
       message: "Prompt must not be longer than 500 characters.",
     }),
 });

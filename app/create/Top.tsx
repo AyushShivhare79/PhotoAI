@@ -40,9 +40,10 @@ export default function Top({ credits }: { credits: number }) {
     <div className="flex justify-between items-center">
       <h1 className="text-2xl lg:text-5xl">AI IMAGE CREATION</h1>
       <div className="flex items-center gap-4">
-        <p className="flex gap-1 text-base lg:text-xl">
-          Credits: <span className={`${poppins.className}`}>{credits}</span>
-        </p>
+        <span className="flex gap-1 text-base lg:text-xl">
+          Credits:
+          <span className={`${poppins.className}`}>{credits}</span>
+        </span>
 
         <DropdownMenu>
           <DropdownMenuTrigger>

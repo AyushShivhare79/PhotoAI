@@ -52,7 +52,7 @@ export default function Create() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [image]);
 
   const form = useForm<z.infer<typeof promptSchema>>({
     defaultValues: {
@@ -139,35 +139,39 @@ export default function Create() {
 
           <section>
             <h1 className="text-3xl">Images</h1>
-            {fetchLoading ? (
-              <div className="grid grid-cols-3 w-[85%] gap-5 p-4">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <Skeleton
-                    key={index}
-                    className="h-[380px] w-[380px] rounded-xl animate-pulse"
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="flex justify-center lg:justify-start items-center">
-                {image.length ? (
-                  <div className="grid grid-cols-1 lg:grid-cols-3 w-[85%] gap-5 p-4">
-                    {image.map((img) => (
-                      <Image
-                        key={img.id}
-                        src={img.url}
-                        width={500}
-                        height={500}
-                        className="rounded-xl"
-                        alt="Image"
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center text-xl">No images generated</div>
-                )}
-              </div>
-            )}
+            <div className="flex justify-center lg:justify-start items-center">
+              {fetchLoading ? (
+                <div className="grid grid-cols-1 lg:grid-cols-3 w-[85%] gap-5 p-4">
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <Skeleton
+                      key={index}
+                      className="w-[220px] h-[220px] lg:h-[380px] lg:w-[380px] rounded-xl animate-pulse"
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex justify-center lg:justify-start items-center">
+                  {image.length ? (
+                    <div className="grid grid-cols-1 lg:grid-cols-3 w-[85%] gap-5 p-4">
+                      {image.map((img) => (
+                        <Image
+                          key={img.id}
+                          src={img.url}
+                          width={500}
+                          height={500}
+                          className="rounded-xl"
+                          alt="Image"
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center text-xl">
+                      No images generated
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </section>
         </div>
       </div>
