@@ -55,6 +55,9 @@ export default function Create() {
   }, []);
 
   const form = useForm<z.infer<typeof promptSchema>>({
+    defaultValues: {
+      prompt: "",
+    },
     resolver: zodResolver(promptSchema),
   });
 

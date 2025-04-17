@@ -31,6 +31,35 @@ async function generateImage(req: NextRequest) {
       return NextResponse.json({ error: "Invalid prompt" }, { status: 400 });
     }
 
+    const userId = session?.user.id;
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
+
+    const credits = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        credits: true,
+      },
+    });
+    
+    if (!credits) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    if (credits?.credits <= 0) {
+      return NextResponse.json(
+        { error: "Insufficient credits" },
+        { status: 403 }
+      );
+    }
+
     const generateImage = await client.images.generate({
       model: process.env.FLUX_MODEL,
       prompt: prompt,
@@ -57,15 +86,6 @@ async function generateImage(req: NextRequest) {
       useUniqueFileName: true,
       folder: "/photo-ai",
     });
-
-    const userId = session?.user.id;
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: "User not authenticated" },
-        { status: 401 }
-      );
-    }
 
     // const transaction = await prisma.$transaction([
     //   prisma.generatedImage.create({
