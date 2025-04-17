@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const FormSchema = z.object({
+export const promptSchema = z.object({
   prompt: z
     .string({ message: "Prompt is required." })
     .min(10, {
@@ -10,3 +10,5 @@ export const FormSchema = z.object({
       message: "Prompt must not be longer than 500 characters.",
     }),
 });
+
+export type PromptSchema = z.infer<typeof promptSchema>;

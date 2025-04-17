@@ -6,12 +6,7 @@ import axios from "axios";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/auth";
 import prisma from "@/prisma";
-
-const imagekit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLIC_KEY!,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
-});
+import { promptSchema } from "@/app/types/schema";
 
 async function generateImage(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -22,7 +17,19 @@ async function generateImage(req: NextRequest) {
       apiKey: process.env.FLUX_API_KEY,
     });
 
+    const imagekit = new ImageKit({
+      publicKey: process.env.IMAGEKIT_PUBLIC_KEY!,
+      privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
+      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
+    });
+
     const { prompt, fileName = "photo-ai" } = await req.json();
+
+    const { success } = promptSchema.safeParse({ prompt });
+
+    if (!success) {
+      return NextResponse.json({ error: "Invalid prompt" }, { status: 400 });
+    }
 
     const generateImage = await client.images.generate({
       model: process.env.FLUX_MODEL,

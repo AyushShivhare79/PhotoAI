@@ -2,7 +2,6 @@
 
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -18,34 +17,28 @@ import { poppins } from "@/lib/font";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { signOut, useSession } from "next-auth/react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useRouter } from "next/navigation";
-import { FormSchema } from "../types/schema";
 import Top from "./Top";
+import { promptSchema } from "../types/schema";
 
 interface ImageProp {
   id: string;
   url: string;
 }
 
+const play = () => {
+  const audio = new Audio("/audio/generate.mp3");
+  audio.volume = 0.1;
+
+  audio.play();
+};
+
 export default function Create() {
   const [image, setImage] = useState<ImageProp[]>([]);
   const [credits, setCredits] = useState(0);
   const [fetchLoading, setFetchLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [generateLoading, setGenerateLoading] = useState(false);
 
-  const session = useSession();
-  const router = useRouter();
-
-  const fetchImages = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
       const response = await axios.get("/api/getImages");
       setImage(response.data.generatedImage);
@@ -58,23 +51,16 @@ export default function Create() {
   }, [image, credits]);
 
   useEffect(() => {
-    fetchImages();
-  }, [image]);
+    fetchData();
+  }, []);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof promptSchema>>({
+    resolver: zodResolver(promptSchema),
   });
 
-  const play = () => {
-    const audio = new Audio("/audio/generate.mp3");
-    audio.volume = 0.1;
-
-    audio.play();
-  };
-
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof promptSchema>) {
     try {
-      setLoading(true);
+      setGenerateLoading(true);
       const response = await axios.post("/api/generate", {
         prompt: data.prompt,
       });
@@ -85,14 +71,14 @@ export default function Create() {
           url: response.data.image.url,
         };
         setImage((prev) => [newImage, ...prev]);
+        play();
         form.reset();
       }
     } catch (error) {
       console.log(error);
       alert("An error occurred while generating the image.");
     } finally {
-      setLoading(false);
-      play();
+      setGenerateLoading(false);
     }
   }
 
@@ -109,7 +95,7 @@ export default function Create() {
                   <div className="flex gap-2 justify-center items-end">
                     <FormControl>
                       <Textarea
-                        disabled={loading}
+                        disabled={generateLoading}
                         className={`resize-none rounded-none ${poppins.className}`}
                         placeholder="Describe what you want to see!"
                         {...field}
@@ -117,11 +103,11 @@ export default function Create() {
                     </FormControl>
                     <div className="pb-2">
                       <button
-                        disabled={loading}
+                        disabled={generateLoading}
                         type="submit"
                         className={`bg-[#c0c0c0] text-xl border border-white text-black hover:font-semibold cursor-pointer h-10 w-40`}
                       >
-                        {loading ? "Generating..." : "Generate"}
+                        {generateLoading ? "Generating..." : "Generate"}
                       </button>
                     </div>
                   </div>
@@ -147,7 +133,7 @@ export default function Create() {
         <div className="space-y-4">
           <div>{formRender()}</div>
 
-          <div>
+          <section>
             <h1 className="text-3xl">Images</h1>
             {fetchLoading ? (
               <div className="grid grid-cols-3 w-[85%] gap-5 p-4">
@@ -178,7 +164,7 @@ export default function Create() {
                 )}
               </div>
             )}
-          </div>
+          </section>
         </div>
       </div>
     </>
