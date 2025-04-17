@@ -1,12 +1,12 @@
-import OpenAI from "openai";
+import OpenAI from 'openai';
 
-import { NextRequest, NextResponse } from "next/server";
-import ImageKit from "imagekit";
-import axios from "axios";
-import { getServerSession } from "next-auth";
-import authOptions from "@/lib/auth";
-import prisma from "@/prisma";
-import { promptSchema } from "@/app/types/schema";
+import { NextRequest, NextResponse } from 'next/server';
+import ImageKit from 'imagekit';
+import axios from 'axios';
+import { getServerSession } from 'next-auth';
+import authOptions from '@/lib/auth';
+import prisma from '@/prisma';
+import { promptSchema } from '@/app/types/schema';
 
 async function generateImage(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -23,20 +23,20 @@ async function generateImage(req: NextRequest) {
       urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
     });
 
-    const { prompt, fileName = "photo-ai" } = await req.json();
+    const { prompt, fileName = 'photo-ai' } = await req.json();
 
     const { success } = promptSchema.safeParse({ prompt });
 
     if (!success) {
-      return NextResponse.json({ error: "Invalid prompt" }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid prompt' }, { status: 400 });
     }
 
     const userId = session?.user.id;
 
     if (!userId) {
       return NextResponse.json(
-        { error: "User not authenticated" },
-        { status: 401 }
+        { error: 'User not authenticated' },
+        { status: 401 },
       );
     }
 
@@ -48,15 +48,15 @@ async function generateImage(req: NextRequest) {
         credits: true,
       },
     });
-    
+
     if (!credits) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     if (credits?.credits <= 0) {
       return NextResponse.json(
-        { error: "Insufficient credits" },
-        { status: 403 }
+        { error: 'Insufficient credits' },
+        { status: 403 },
       );
     }
 
@@ -64,27 +64,27 @@ async function generateImage(req: NextRequest) {
       model: process.env.FLUX_MODEL,
       prompt: prompt,
       n: 1,
-      size: "1024x1024",
-      response_format: "url",
+      size: '1024x1024',
+      response_format: 'url',
     });
 
     const imageUrl = generateImage.data[0].url;
 
     if (!imageUrl) {
       return NextResponse.json(
-        { error: "Image URL not found" },
-        { status: 500 }
+        { error: 'Image URL not found' },
+        { status: 500 },
       );
     }
 
-    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
-    const buffer = Buffer.from(response.data, "binary");
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    const buffer = Buffer.from(response.data, 'binary');
 
     const uploadResponse = await imagekit.upload({
       file: buffer,
       fileName,
       useUniqueFileName: true,
-      folder: "/photo-ai",
+      folder: '/photo-ai',
     });
 
     // const transaction = await prisma.$transaction([
@@ -135,10 +135,10 @@ async function generateImage(req: NextRequest) {
 
     return NextResponse.json({ success: true, image: storeImage });
   } catch (error) {
-    console.error("Error generating image:", error);
+    console.error('Error generating image:', error);
     return NextResponse.json(
-      { error: "Failed to generate image" },
-      { status: 500 }
+      { error: 'Failed to generate image' },
+      { status: 500 },
     );
   }
 }

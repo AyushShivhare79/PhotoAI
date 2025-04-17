@@ -1,7 +1,7 @@
-import Google from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "@/prisma/index";
-import { AuthOptions } from "next-auth";
+import Google from 'next-auth/providers/google';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import prisma from '@/prisma/index';
+import { AuthOptions } from 'next-auth';
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -12,7 +12,7 @@ export const authOptions = {
     }),
   ],
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
