@@ -1,7 +1,7 @@
-import authOptions from "@/lib/auth";
-import prisma from "@/prisma";
-import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import authOptions from '@/lib/auth';
+import prisma from '@/prisma';
+import { getServerSession } from 'next-auth';
+import { NextResponse } from 'next/server';
 
 async function getImages() {
   const session = await getServerSession(authOptions);
@@ -14,7 +14,7 @@ async function getImages() {
     select: {
       generatedImage: {
         orderBy: {
-          createdAt: "desc",
+          createdAt: 'desc',
         },
       },
       credits: true,

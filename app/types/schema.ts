@@ -1,13 +1,13 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const promptSchema = z.object({
   prompt: z
-    .string({ message: "Prompt is required." })
+    .string({ message: 'Prompt is required.' })
     .min(10, {
-      message: "Prompt must be at least 10 characters.",
+      message: 'Prompt must be at least 10 characters.',
     })
     .max(1000, {
-      message: "Prompt must not be longer than 500 characters.",
+      message: 'Prompt must not be longer than 500 characters.',
     }),
 });
 

@@ -13,12 +13,14 @@ PhotoAI is a modern web application that leverages AI technology to generate ima
 ## Tech Stack
 
 ### Frontend
+
 - [Next.js 15](https://nextjs.org/) - React framework with server-side rendering
 - [React 19](https://react.dev/) - UI library
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
 - [React Hook Form](https://react-hook-form.com/) - Form validation
 
 ### Backend
+
 - [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction) - Serverless functions
 - [Prisma](https://www.prisma.io/) - ORM for database operations
 - [NextAuth.js](https://next-auth.js.org/) - Authentication
@@ -28,6 +30,7 @@ PhotoAI is a modern web application that leverages AI technology to generate ima
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v18 or later recommended)
 - pnpm
 - Database (compatible with Prisma)
@@ -35,17 +38,20 @@ PhotoAI is a modern web application that leverages AI technology to generate ima
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/PhotoAI.git
 cd PhotoAI
 ```
 
 2. Install dependencies
+
 ```bash
 pnpm install
 ```
 
 3. Set up environment variables
+
 ```bash
 # Copy the example environment variables file
 cp .env.example .env
@@ -54,11 +60,13 @@ cp .env.example .env
 ```
 
 4. Initialize the database
+
 ```bash
 pnpm prisma db push
 ```
 
 5. Start the development server
+
 ```bash
 pnpm dev
 ```
@@ -98,4 +106,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - OpenAI for providing the image generation technology
 - Next.js team for the amazing framework
 - ImageKit for image storage solutions
-````
+
+```
+
+```
