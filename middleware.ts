@@ -2,7 +2,7 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-  matcher: ['/create/:path*', '/api/generate/:path*', '/api/getImages/:path*'],
+  matcher: ['/create/:path*', '/api/generate/:path*'],
 };
 
 const withAuth = async (req: NextRequest) => {
