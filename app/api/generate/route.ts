@@ -40,7 +40,7 @@ async function generateImage(req: NextRequest) {
       );
     }
 
-    const credits = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
@@ -49,11 +49,11 @@ async function generateImage(req: NextRequest) {
       },
     });
 
-    if (!credits) {
+    if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    if (credits?.credits <= 0) {
+    if (user?.credits <= 0) {
       return NextResponse.json(
         { error: 'Insufficient credits' },
         { status: 403 },
@@ -87,53 +87,38 @@ async function generateImage(req: NextRequest) {
       folder: '/photo-ai',
     });
 
-    // const transaction = await prisma.$transaction([
-    //   prisma.generatedImage.create({
-    //     data: {
-    //       userId,
-    //       url: uploadResponse.url,
-    //     },
-    //     select: {
-    //       id: true,
-    //       url: true,
-    //     },
-    //   }),
-
-    //   prisma.user.update({
-    //     where: {
-    //       id: userId,
-    //     },
-    //     data: {
-    //       credits: {
-    //         decrement: 1,
-    //       },
-    //     },
-    //   }),
-    // ]);
-
-    const storeImage = await prisma.generatedImage.create({
-      data: {
-        userId,
-        url: uploadResponse.url,
-      },
-      select: {
-        id: true,
-        url: true,
-      },
-    });
-
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        credits: {
-          decrement: 1,
+    await prisma.$transaction(async (prisma) => {
+      const storeImage = await prisma.generatedImage.create({
+        data: {
+          userId,
+          url: uploadResponse.url,
         },
-      },
+        select: {
+          id: true,
+          url: true,
+        },
+      });
+
+      if (!storeImage) {
+        return NextResponse.json(
+          { error: 'Failed to store image' },
+          { status: 500 },
+        );
+      }
+
+      await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          credits: {
+            decrement: 1,
+          },
+        },
+      });
     });
 
-    return NextResponse.json({ success: true, image: storeImage });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error generating image:', error);
     return NextResponse.json(

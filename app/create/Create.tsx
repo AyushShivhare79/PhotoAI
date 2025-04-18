@@ -69,12 +69,14 @@ export default function Create() {
       });
 
       if (response.data.success) {
-        const newImage = {
-          id: response.data.image.id,
-          url: response.data.image.url,
-        };
-        setImage((prev) => [newImage, ...prev]);
+        // const newImage = {
+        //   id: response.data.image.id,
+        //   url: response.data.image.url,
+        // };
+        // setImage((prev) => [newImage, ...prev]);
         play();
+        fetchData();
+
         form.reset();
       }
     } catch (error) {
