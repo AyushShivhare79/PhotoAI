@@ -3,7 +3,6 @@
 import { getServerSession } from 'next-auth';
 import prisma from '@/prisma';
 import authOptions from '@/lib/auth';
-import { error } from 'console';
 
 export async function getImages() {
   const session = await getServerSession(authOptions);

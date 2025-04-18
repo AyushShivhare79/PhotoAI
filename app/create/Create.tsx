@@ -51,7 +51,7 @@ export default function Create() {
     } finally {
       setFetchLoading(false);
     }
-  }, [image, credits]);
+  }, []);
 
   useEffect(() => {
     fetchData();
