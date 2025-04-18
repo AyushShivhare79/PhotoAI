@@ -8,6 +8,12 @@ import authOptions from '@/lib/auth';
 import prisma from '@/prisma';
 import { promptSchema } from '@/app/types/schema';
 
+const imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY!,
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
+});
+
 async function generateImage(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
@@ -15,12 +21,6 @@ async function generateImage(req: NextRequest) {
     const client = new OpenAI({
       baseURL: process.env.FLUX_API_URL,
       apiKey: process.env.FLUX_API_KEY,
-    });
-
-    const imagekit = new ImageKit({
-      publicKey: process.env.IMAGEKIT_PUBLIC_KEY!,
-      privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
-      urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
     });
 
     const { prompt, fileName = 'photo-ai' } = await req.json();

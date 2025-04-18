@@ -19,6 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Top from './Top';
 import { promptSchema } from '../types/schema';
+import { getImages } from '@/app/actions/image';
 
 interface ImageProp {
   id: string;
@@ -40,9 +41,11 @@ export default function Create() {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await axios.get('/api/getImages');
-      setImage(response.data.generatedImage);
-      setCredits(response.data.credits);
+      // const response = await axios.get('/api/getImages');
+      const response = await getImages();
+      console.log('Fetched images:', response);
+      setImage(response?.generatedImage || []);
+      setCredits(response?.credits || 0);
     } catch (error) {
       console.error('Error fetching images:', error);
     } finally {
@@ -69,15 +72,10 @@ export default function Create() {
       });
 
       if (response.data.success) {
-        // const newImage = {
-        //   id: response.data.image.id,
-        //   url: response.data.image.url,
-        // };
-        // setImage((prev) => [newImage, ...prev]);
-        play();
-        fetchData();
-
         form.reset();
+
+        fetchData();
+        play();
       }
     } catch (error) {
       console.log(error);
