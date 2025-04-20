@@ -1,8 +1,17 @@
-const Button = ({ btnName }: { btnName: string }) => {
+const Button = ({
+  children,
+  onClick,
+}: {
+  children?: React.ReactNode;
+  onClick: () => void;
+}) => {
   return (
-    <button className='group relative border border-black bg-transparent px-8 py-2 text-black transition duration-200 dark:border-white'>
-      <div className='absolute -right-2 -bottom-2 -z-10 h-full w-full bg-yellow-300 transition-all duration-200 group-hover:right-0 group-hover:bottom-0' />
-      <span className='relative'>{btnName}</span>
+    <button
+      onClick={onClick}
+      type='submit'
+      className={`h-10 w-full cursor-pointer border border-white bg-[#c0c0c0] text-xl text-black hover:font-semibold lg:w-40`}
+    >
+      {children}
     </button>
   );
 };
