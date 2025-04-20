@@ -23,14 +23,6 @@ model GeneratedImage {
   userId String
 }
 
-// For home page
-model Gallery {
-  id        String   @id @default(cuid())
-  url       String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
   id                       String  @id @default(cuid())

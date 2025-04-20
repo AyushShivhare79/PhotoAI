@@ -36,7 +36,9 @@ export default function Page() {
 
           <div className='grid grid-cols-3 gap-4'>
             {image.map((img) => (
-              <Image src={img.src} alt={img.alt} width={380} height={380} />
+              <div key={img.id} className='relative'>
+                <Image src={img.src} alt={img.alt} width={380} height={380} />
+              </div>
             ))}
           </div>
         </div>
