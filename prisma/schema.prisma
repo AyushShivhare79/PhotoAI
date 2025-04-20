@@ -23,6 +23,13 @@ model GeneratedImage {
   userId String
 }
 
+model Gallery {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // Necessary for Next auth
 model Account {
   id                       String  @id @default(cuid())
