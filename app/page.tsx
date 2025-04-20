@@ -1,9 +1,10 @@
-import Login from '../components/home/Login';
+import Navbar from '@/components/Navbar';
 
 export default async function Page() {
   return (
     <>
-      <Login />
+      <Navbar />
+      <h1>Platform Gallery </h1>
     </>
   );
 }
