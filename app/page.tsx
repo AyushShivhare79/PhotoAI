@@ -43,67 +43,7 @@ export default function Page() {
             </Button>
           </div>
 
-          {/* <div className='grid grid-cols-3 gap-4'> */}
-          {/* <div className='relative h-[500px] w-[300px] border'>
-              <Image
-                src={image[0].src}
-                alt={image[0].alt}
-                fill
-                className='object-cover'
-              />
-            </div>
-
-            <div className='relative h-[350px] w-[300px] border'>
-              <Image
-                src={image[1].src}
-                alt={image[1].alt}
-                fill
-                className='object-cover'
-              />
-            </div>
-
-            <div className='relative h-[500px] w-[300px] border'>
-              <Image
-                src={image[4].src}
-                alt={image[4].alt}
-                fill
-                className='object-cover'
-              />
-            </div>
-
-            <div className='relative h-[500px] w-[300px] border'>
-              <Image
-                src={image[0].src}
-                alt={image[0].alt}
-                fill
-                className='object-cover'
-              />
-            </div>
-
-            <div className='relative h-[350px] w-[300px] border'>
-              <Image
-                src={image[1].src}
-                alt={image[1].alt}
-                fill
-                className='object-cover'
-              />
-            </div>
-
-            <div className='relative h-[500px] w-[300px] border'>
-              <Image
-                src={image[4].src}
-                alt={image[4].alt}
-                fill
-                className='object-cover'
-              />
-            </div> */}
-
           <div>
-            {/* {image.map((img) => (
-              <div key={img.id} className='relative'>
-                <Image src={img.src} alt={img.alt} width={400} height={400} />
-              </div>
-            ))} */}
             <div className='flex gap-14 overflow-hidden pt-16'>
               <motion.div
                 initial={{ x: 56 }}
@@ -112,13 +52,16 @@ export default function Page() {
                 className='flex flex-shrink-0 gap-14 text-6xl'
               >
                 {image.map((img) => (
-                  <div key={img.id} className='relative'>
+                  <div
+                    key={img.id}
+                    className='group relative overflow-hidden rounded-lg'
+                  >
                     <Image
                       src={img.src}
                       alt={img.alt}
-                      width={400}
                       height={400}
-                      className='rounded-4xl transition-all duration-500 ease-in-out hover:scale-105'
+                      width={400}
+                      className='object-cover grayscale transition-transform duration-500 ease-in-out group-hover:scale-110 hover:grayscale-0'
                     />
                   </div>
                 ))}
@@ -131,13 +74,16 @@ export default function Page() {
                 className='flex flex-shrink-0 gap-14 text-6xl'
               >
                 {image.map((img) => (
-                  <div key={img.id} className='relative'>
+                  <div
+                    key={img.id}
+                    className='group relative overflow-hidden rounded-lg'
+                  >
                     <Image
                       src={img.src}
                       alt={img.alt}
-                      width={400}
                       height={400}
-                      className='rounded-4xl'
+                      width={400}
+                      className='object-cover grayscale transition-transform duration-500 ease-in-out group-hover:scale-110 hover:grayscale-0'
                     />
                   </div>
                 ))}
