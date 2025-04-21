@@ -84,7 +84,7 @@ async function generateImage(req: NextRequest) {
       file: buffer,
       fileName,
       useUniqueFileName: true,
-      folder: '/photo-ai',
+      folder: process.env.IMAGEKIT_FOLDER,
     });
 
     await prisma.$transaction(async (prisma) => {

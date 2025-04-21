@@ -13,7 +13,7 @@ export default function Page() {
 
   return (
     <>
-      <div className='h-screen'>
+      <div className='h-[90vh]'>
         <Navbar />
 
         <div className='flex h-full flex-col items-center space-y-8 pt-16'>
