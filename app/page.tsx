@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { poppins } from '@/lib/font';
 import Image from 'next/image';
 import image from '@/public/images/Image.json';
+import { motion } from 'framer-motion';
 
 export default function Page() {
   const router = useRouter();
@@ -24,22 +25,124 @@ export default function Page() {
             ideas to the world.
           </p>
 
-          <div>
+          <div className='flex gap-2'>
             <Button
-              className='rounded-full'
+              variant={'default'}
+              className='cursor-pointer rounded-xl p-7 text-lg hover:font-bold'
               onClick={() => router.push('/create')}
-              variant={'secondary'}
             >
               Get started
             </Button>
+
+            <Button
+              className='cursor-pointer rounded-xl p-7 text-lg hover:font-bold'
+              onClick={() => router.push('/create')}
+              variant={'secondary'}
+            >
+              Contact us
+            </Button>
           </div>
 
-          <div className='grid grid-cols-3 gap-4'>
-            {image.map((img) => (
+          {/* <div className='grid grid-cols-3 gap-4'> */}
+          {/* <div className='relative h-[500px] w-[300px] border'>
+              <Image
+                src={image[0].src}
+                alt={image[0].alt}
+                fill
+                className='object-cover'
+              />
+            </div>
+
+            <div className='relative h-[350px] w-[300px] border'>
+              <Image
+                src={image[1].src}
+                alt={image[1].alt}
+                fill
+                className='object-cover'
+              />
+            </div>
+
+            <div className='relative h-[500px] w-[300px] border'>
+              <Image
+                src={image[4].src}
+                alt={image[4].alt}
+                fill
+                className='object-cover'
+              />
+            </div>
+
+            <div className='relative h-[500px] w-[300px] border'>
+              <Image
+                src={image[0].src}
+                alt={image[0].alt}
+                fill
+                className='object-cover'
+              />
+            </div>
+
+            <div className='relative h-[350px] w-[300px] border'>
+              <Image
+                src={image[1].src}
+                alt={image[1].alt}
+                fill
+                className='object-cover'
+              />
+            </div>
+
+            <div className='relative h-[500px] w-[300px] border'>
+              <Image
+                src={image[4].src}
+                alt={image[4].alt}
+                fill
+                className='object-cover'
+              />
+            </div> */}
+
+          <div>
+            {/* {image.map((img) => (
               <div key={img.id} className='relative'>
-                <Image src={img.src} alt={img.alt} width={380} height={380} />
+                <Image src={img.src} alt={img.alt} width={400} height={400} />
               </div>
-            ))}
+            ))} */}
+            <div className='flex gap-14 overflow-hidden pt-16'>
+              <motion.div
+                initial={{ x: 56 }}
+                animate={{ x: '-100%' }}
+                transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+                className='flex flex-shrink-0 gap-14 text-6xl'
+              >
+                {image.map((img) => (
+                  <div key={img.id} className='relative'>
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      width={400}
+                      height={400}
+                      className='rounded-4xl transition-all duration-500 ease-in-out hover:scale-105'
+                    />
+                  </div>
+                ))}
+              </motion.div>
+
+              <motion.div
+                initial={{ x: 56 }}
+                animate={{ x: '-100%' }}
+                transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+                className='flex flex-shrink-0 gap-14 text-6xl'
+              >
+                {image.map((img) => (
+                  <div key={img.id} className='relative'>
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      width={400}
+                      height={400}
+                      className='rounded-4xl'
+                    />
+                  </div>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>
