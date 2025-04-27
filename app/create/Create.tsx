@@ -3,7 +3,7 @@
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Form,
   FormControl,
@@ -39,11 +39,9 @@ export default function Create() {
   const [fetchLoading, setFetchLoading] = useState(true);
   const [generateLoading, setGenerateLoading] = useState(false);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     try {
-      // const response = await axios.get('/api/getImages');
       const response = await getImages();
-      console.log('Fetched images:', response);
       setImage(response?.generatedImage || []);
       setCredits(response?.credits || 0);
     } catch (error) {
@@ -51,7 +49,7 @@ export default function Create() {
     } finally {
       setFetchLoading(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
     fetchData();
@@ -135,40 +133,37 @@ export default function Create() {
         <Top credits={credits} />
 
         <div className='space-y-4'>
-          <div>{formRender()}</div>
+          {formRender()}
 
           <section>
-            <h1 className='text-3xl'>Images</h1>
             <div className='flex items-center justify-center lg:justify-start'>
               {fetchLoading ? (
-                <div className='grid w-[85%] grid-cols-1 gap-5 p-4 lg:grid-cols-3'>
-                  {Array.from({ length: 6 }).map((_, index) => (
-                    <Skeleton
-                      key={index}
-                      className='h-[220px] w-[220px] animate-pulse rounded-xl lg:h-[380px] lg:w-[380px]'
-                    />
-                  ))}
-                </div>
+                <div className='grid w-[85%] grid-cols-1 gap-5 p-4 lg:grid-cols-3'></div>
               ) : (
-                <div className='flex items-center justify-center lg:justify-start'>
+                <div className='flex w-full items-center justify-center lg:justify-start'>
                   {image.length ? (
                     <div className='grid w-[85%] grid-cols-1 gap-5 p-4 lg:grid-cols-3'>
                       {image.map((img) => (
                         <a key={img.id} href={`${img.url}`} download>
-                          <Image
+                          <div
                             key={img.id}
-                            src={img.url}
-                            width={500}
-                            height={500}
-                            className='rounded-xl'
-                            alt='Image'
-                          />
+                            className='group relative overflow-hidden rounded-lg'
+                          >
+                            <Image
+                              key={img.id}
+                              src={img.url}
+                              alt='Image'
+                              height={400}
+                              width={400}
+                              className='object-cover grayscale transition-transform duration-500 ease-in-out group-hover:scale-110 hover:grayscale-0'
+                            />
+                          </div>
                         </a>
                       ))}
                     </div>
                   ) : (
-                    <div className='text-center text-xl'>
-                      No images generated
+                    <div className='w-full text-center text-xl'>
+                      <h1>No images generated</h1>
                     </div>
                   )}
                 </div>
