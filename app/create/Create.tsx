@@ -1,7 +1,6 @@
 'use client';
 
 import { Textarea } from '@/components/ui/textarea';
-import { Skeleton } from '@/components/ui/skeleton';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {
