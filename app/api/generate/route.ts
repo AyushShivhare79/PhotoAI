@@ -59,7 +59,7 @@ async function generateImage(req: NextRequest) {
         { status: 403 },
       );
     }
-
+ 
     const generateImage = await client.images.generate({
       model: process.env.FLUX_MODEL,
       prompt: prompt,
