@@ -146,14 +146,13 @@ export default function Create() {
                         <a key={img.id} href={`${img.url}`} download>
                           <div
                             key={img.id}
-                            className='group relative overflow-hidden rounded-lg'
+                            className='group relative h-72 w-80 overflow-hidden rounded-lg'
                           >
                             <Image
                               key={img.id}
                               src={img.url}
                               alt='Image'
-                              height={400}
-                              width={400}
+                              fill
                               className='object-cover grayscale transition-transform duration-500 ease-in-out group-hover:scale-110 hover:grayscale-0'
                             />
                           </div>
