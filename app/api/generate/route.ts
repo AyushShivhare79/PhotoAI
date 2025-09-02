@@ -60,15 +60,38 @@ async function generateImage(req: NextRequest) {
       );
     }
 
-    const generateImage = await client.images.generate({
-      model: process.env.FLUX_MODEL,
-      prompt: prompt,
-      n: 1,
-      size: '1024x1024',
-      response_format: 'url',
+    // const generateImage = await client.images.generate({
+    //   model: process.env.FLUX_MODEL,
+    //   prompt: prompt,
+    //   n: 1,
+    //   size: '1024x1024',
+    //   response_format: 'url',
+    // });
+
+    const generateImage = await client.chat.completions.create({
+      model: 'google/gemini-2.5-flash-image-preview:free',
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'What is in this image?',
+            },
+            {
+              type: 'image_url',
+              image_url: {
+                url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg',
+              },
+            },
+          ],
+        },
+      ],
     });
 
-    const imageUrl = generateImage.data[0].url;
+    // const imageUrl = generateImage.data[0].url;
+    const imageUrl = generateImage.choices[0].message;
+    console.log('Generated Image: ', imageUrl);
 
     if (!imageUrl) {
       return NextResponse.json(

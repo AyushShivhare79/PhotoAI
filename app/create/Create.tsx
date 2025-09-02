@@ -1,6 +1,7 @@
 'use client';
 
 import { Textarea } from '@/components/ui/textarea';
+import { HiSparkles } from 'react-icons/hi2';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {
@@ -82,6 +83,18 @@ export default function Create() {
     }
   }
 
+  const optimizePrompt = async () => {
+    const response = await axios.post('/api/prompt-optimize', {
+      prompt: form.getValues('prompt'),
+    });
+
+    if (response.data) {
+      form.setValue('prompt', response.data.message);
+    }
+
+    console.log('Optimize: ', response.data);
+  };
+
   const formRender = () => {
     return (
       <div className='flex items-end justify-center gap-2'>
@@ -94,12 +107,18 @@ export default function Create() {
                 <FormItem className='w-full'>
                   <div className='flex flex-col items-end justify-center gap-2 lg:flex-row'>
                     <FormControl>
-                      <Textarea
-                        disabled={generateLoading}
-                        className={`resize-none rounded-none ${poppins.className}`}
-                        placeholder='Describe what you want to see!'
-                        {...field}
-                      />
+                      <div className='relative flex w-full'>
+                        <Textarea
+                          disabled={generateLoading}
+                          className={`resize-none rounded-none ${poppins.className}`}
+                          placeholder='Describe what you want to see!'
+                          {...field}
+                        />
+                        <HiSparkles
+                          className='absolute right-2 bottom-2 cursor-pointer'
+                          onClick={optimizePrompt}
+                        />
+                      </div>
                     </FormControl>
 
                     <div className='w-full space-y-2 pb-2 lg:w-auto'>
@@ -146,7 +165,7 @@ export default function Create() {
                         <a key={img.id} href={`${img.url}`} download>
                           <div
                             key={img.id}
-                            className='group relative h-72 w-80 overflow-hidden rounded-lg'
+                            className='group relative h-80 w-96 overflow-hidden rounded-lg'
                           >
                             <Image
                               key={img.id}
