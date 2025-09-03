@@ -91,8 +91,6 @@ export default function Create() {
     if (response.data) {
       form.setValue('prompt', response.data.message);
     }
-
-    console.log('Optimize: ', response.data);
   };
 
   const formRender = () => {
