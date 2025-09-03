@@ -15,7 +15,7 @@ const imagekit = new ImageKit({
 
 type ImageResponse = {
   role: string;
-  content: string | any[];
+  content: string;
   images?: {
     type: 'image_url';
     image_url: { url: string };
