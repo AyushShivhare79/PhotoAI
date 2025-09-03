@@ -23,6 +23,7 @@ export async function getImages() {
             id: true,
             url: true,
           },
+          take: 18,
           orderBy: {
             createdAt: 'desc',
           },

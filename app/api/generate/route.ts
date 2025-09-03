@@ -2,7 +2,6 @@ import OpenAI from 'openai';
 
 import { NextRequest, NextResponse } from 'next/server';
 import ImageKit from 'imagekit';
-import axios from 'axios';
 import { getServerSession } from 'next-auth';
 import authOptions from '@/lib/auth';
 import prisma from '@/prisma';
@@ -14,13 +13,23 @@ const imagekit = new ImageKit({
   urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
 });
 
+type ImageResponse = {
+  role: string;
+  content: string;
+  images?: {
+    type: 'image_url';
+    image_url: { url: string };
+    index: number;
+  }[];
+};
+
 async function generateImage(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
   try {
     const client = new OpenAI({
-      baseURL: process.env.FLUX_API_URL,
-      apiKey: process.env.FLUX_API_KEY,
+      baseURL: process.env.IMAGE_GEN_API_BASE_URL,
+      apiKey: process.env.IMAGE_GEN_API_KEY,
     });
 
     const { prompt, fileName = 'photo-ai' } = await req.json();
@@ -59,16 +68,34 @@ async function generateImage(req: NextRequest) {
         { status: 403 },
       );
     }
- 
-    const generateImage = await client.images.generate({
-      model: process.env.FLUX_MODEL,
-      prompt: prompt,
-      n: 1,
-      size: '1024x1024',
-      response_format: 'url',
+
+    const generateImage = await client.chat.completions.create({
+      model: process.env.IMAGE_GEN_MODEL!,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: prompt,
+            },
+          ],
+        },
+      ],
     });
 
-    const imageUrl = generateImage.data[0].url;
+    console.log('Generate Image: ', generateImage.choices[0].message);
+
+    const message = generateImage.choices[0].message as ImageResponse;
+
+    if (!message.images) {
+      return NextResponse.json(
+        { error: 'Image generation failed' },
+        { status: 500 },
+      );
+    }
+
+    const imageUrl = message.images[0]?.image_url.url;
 
     if (!imageUrl) {
       return NextResponse.json(
@@ -77,8 +104,8 @@ async function generateImage(req: NextRequest) {
       );
     }
 
-    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
-    const buffer = Buffer.from(response.data, 'binary');
+    const base64Data = imageUrl.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
 
     const uploadResponse = await imagekit.upload({
       file: buffer,
