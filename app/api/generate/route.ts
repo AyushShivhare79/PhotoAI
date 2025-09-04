@@ -86,7 +86,8 @@ async function generateImage(req: NextRequest) {
 
     console.log('Generate Image: ', generateImage.choices[0].message);
 
-    const message = generateImage.choices[0].message as unknown as ImageResponse;
+    const message = generateImage.choices[0]
+      .message as unknown as ImageResponse;
 
     if (!message.images) {
       return NextResponse.json(

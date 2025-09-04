@@ -156,14 +156,14 @@ export default function Create() {
               {fetchLoading ? (
                 <div className='grid w-[85%] grid-cols-1 gap-5 p-4 lg:grid-cols-3'></div>
               ) : (
-                <div className='flex w-full items-center justify-center lg:justify-start'>
+                <div className='flex w-full items-center justify-start'>
                   {image.length ? (
-                    <div className='grid w-[85%] grid-cols-1 gap-5 p-4 lg:grid-cols-3'>
+                    <div className='grid w-full grid-cols-1 gap-5 p-4 md:grid-cols-2 lg:w-[90%] lg:grid-cols-3'>
                       {image.map((img) => (
                         <a key={img.id} href={`${img.url}`} download>
                           <div
                             key={img.id}
-                            className='group relative h-80 w-96 overflow-hidden rounded-lg'
+                            className='group relative h-72 w-80 overflow-hidden rounded-lg lg:h-80 lg:w-96'
                           >
                             <Image
                               key={img.id}
