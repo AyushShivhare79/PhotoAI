@@ -20,6 +20,7 @@ import Image from 'next/image';
 import Top from './Top';
 import { promptSchema } from '../types/schema';
 import { getImages } from '@/app/actions/image';
+import { Input } from '@/components/ui/input';
 
 interface ImageProp {
   id: string;
@@ -102,13 +103,13 @@ export default function Create() {
               control={form.control}
               name='prompt'
               render={({ field }) => (
-                <FormItem className='w-full'>
+                <FormItem>
                   <div className='flex flex-col items-end justify-center gap-2 lg:flex-row'>
                     <FormControl>
                       <div className='relative flex w-full'>
                         <Textarea
                           disabled={generateLoading}
-                          className={`resize-none rounded-none ${poppins.className}`}
+                          className={`resize-none overflow-x-hidden rounded-none ${poppins.className}`}
                           placeholder='Describe what you want to see!'
                           {...field}
                         />
@@ -119,7 +120,7 @@ export default function Create() {
                       </div>
                     </FormControl>
 
-                    <div className='w-full space-y-2 pb-2 lg:w-auto'>
+                    <div className='w-full space-y-2 pb-1 lg:w-auto'>
                       <button
                         disabled={generateLoading}
                         type='submit'
@@ -154,16 +155,16 @@ export default function Create() {
           <section>
             <div className='flex items-center justify-center lg:justify-start'>
               {fetchLoading ? (
-                <div className='grid w-[85%] grid-cols-1 gap-5 p-4 lg:grid-cols-3'></div>
+                <div className='grid w-[85%] grid-cols-1 gap-5 p-4 md:grid-cols-2 lg:grid-cols-3'></div>
               ) : (
-                <div className='flex w-full items-center justify-center lg:justify-start'>
+                <div className='flex w-full items-center justify-center rounded-2xl border border-gray-600 lg:justify-start'>
                   {image.length ? (
-                    <div className='grid w-[85%] grid-cols-1 gap-5 p-4 lg:grid-cols-3'>
+                    <div className='grid w-full grid-cols-1 place-items-center gap-10 p-10 md:grid-cols-2 lg:grid-cols-3'>
                       {image.map((img) => (
                         <a key={img.id} href={`${img.url}`} download>
                           <div
                             key={img.id}
-                            className='group relative h-80 w-96 overflow-hidden rounded-lg'
+                            className='group relative h-72 w-80 overflow-hidden rounded-lg lg:h-[340px] lg:w-[380px]'
                           >
                             <Image
                               key={img.id}

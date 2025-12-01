@@ -7,9 +7,19 @@ import image from '@/public/images/Image.json';
 import { poppins } from '@/lib/font';
 import Marquee from '@/components/Marquee';
 import Image from 'next/image';
+import { signIn, useSession } from 'next-auth/react';
 
 export default function Page() {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  const handleClick = () => {
+    if (status === 'authenticated') {
+      return router.push('/create');
+    }
+    console.log('User not authenticated, redirecting to sign-in.');
+    signIn('google', { callbackUrl: '/create' });
+  };
 
   return (
     <>
@@ -29,14 +39,14 @@ export default function Page() {
             <Button
               variant={'default'}
               className='cursor-pointer rounded-xl p-7 text-lg hover:font-bold'
-              onClick={() => router.push('/create')}
+              onClick={handleClick}
             >
               Get started
             </Button>
 
             <Button
               className='cursor-pointer rounded-xl p-7 text-lg hover:font-bold'
-              onClick={() => router.push('/create')}
+              onClick={handleClick}
               variant={'secondary'}
             >
               Contact us

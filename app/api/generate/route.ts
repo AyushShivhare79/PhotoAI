@@ -13,16 +13,6 @@ const imagekit = new ImageKit({
   urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
 });
 
-type ImageResponse = {
-  role: string;
-  content: string;
-  images?: {
-    type: 'image_url';
-    image_url: { url: string };
-    index: number;
-  }[];
-};
-
 async function generateImage(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
@@ -69,33 +59,15 @@ async function generateImage(req: NextRequest) {
       );
     }
 
-    const generateImage = await client.chat.completions.create({
+    const generateImage = await client.images.generate({
       model: process.env.IMAGE_GEN_MODEL!,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'text',
-              text: prompt,
-            },
-          ],
-        },
-      ],
+      prompt: prompt,
+      n: 1,
+      size: '1024x1024',
+      response_format: 'b64_json',
     });
 
-    console.log('Generate Image: ', generateImage.choices[0].message);
-
-    const message = generateImage.choices[0].message as unknown as ImageResponse;
-
-    if (!message.images) {
-      return NextResponse.json(
-        { error: 'Image generation failed' },
-        { status: 500 },
-      );
-    }
-
-    const imageUrl = message.images[0]?.image_url.url;
+    const imageUrl = generateImage.data[0].b64_json;
 
     if (!imageUrl) {
       return NextResponse.json(
@@ -103,7 +75,6 @@ async function generateImage(req: NextRequest) {
         { status: 500 },
       );
     }
-
     const base64Data = imageUrl.replace(/^data:image\/\w+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
 
