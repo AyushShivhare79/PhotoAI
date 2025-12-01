@@ -164,7 +164,7 @@ export default function Create() {
                         <a key={img.id} href={`${img.url}`} download>
                           <div
                             key={img.id}
-                            className='group relative h-72 w-80 overflow-hidden rounded-lg lg:h-[340px] lg:w-[400px]'
+                            className='group relative h-72 w-80 overflow-hidden rounded-lg lg:h-[340px] lg:w-[380px]'
                           >
                             <Image
                               key={img.id}
