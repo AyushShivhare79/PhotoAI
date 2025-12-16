@@ -12,6 +12,8 @@ import { signIn, useSession } from 'next-auth/react';
 export default function Page() {
   const router = useRouter();
   const { data: session, status } = useSession();
+  
+  console.log('Session data:', session);
 
   const handleClick = () => {
     if (status === 'authenticated') {
