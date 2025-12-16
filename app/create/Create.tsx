@@ -20,7 +20,6 @@ import Image from 'next/image';
 import Top from './Top';
 import { promptSchema } from '../types/schema';
 import { getImages } from '@/app/actions/image';
-import { Input } from '@/components/ui/input';
 
 interface ImageProp {
   id: string;
