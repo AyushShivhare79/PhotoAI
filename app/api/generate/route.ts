@@ -67,6 +67,13 @@ async function generateImage(req: NextRequest) {
       response_format: 'b64_json',
     });
 
+    if (!generateImage.data || generateImage.data.length === 0) {
+      return NextResponse.json(
+        { error: 'No image data received' },
+        { status: 500 },
+      );
+    }
+    
     const imageUrl = generateImage.data[0].b64_json;
 
     if (!imageUrl) {
