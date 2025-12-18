@@ -3,6 +3,9 @@ on:
   pull_request:
     branches:
       - '**'
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
 jobs:
   Continuous-Integration:
     name: Checking the build
@@ -18,4 +21,4 @@ jobs:
         run: pnpm install
 
       - name: Run linting check
-        run: pnpm run lint
+        run: pnpm run build
