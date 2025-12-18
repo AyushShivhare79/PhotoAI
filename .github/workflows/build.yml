@@ -3,6 +3,8 @@ on:
   pull_request:
     branches:
       - '**'
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
 jobs:
   Continuous-Integration:
